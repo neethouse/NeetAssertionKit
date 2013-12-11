@@ -3,7 +3,7 @@
 //  NeetAssertionKit
 //
 //  Created by mtmta on 2013/12/10.
-//  Copyright (c) 2013 neethouse.org. All rights reserved.
+//  Copyright (c) 2013 covelline, LLC. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -32,12 +32,12 @@
  
  // 条件式が false の時にエラーを出す.
  - (void)doHogeHoge:(id)homuhomu {
-    NAKAssert(homuhomu != nil, @"homuhomu must not nil (%@)", hoge);
+    NAKAssertTrue(homuhomu != nil, @"homuhomu must not nil (%@)", hoge);
  }
  
  // C の関数内で使う時は NAKWrap で囲む.
  void doHogeHoge(id homuhomu) {
-    NAKWrap(NAKAssert(homuhomu != nil, @"homuhomu must not nil (%@)", hoge));
+    NAKWrap(NAKAssertTrue(homuhomu != nil, @"homuhomu must not nil (%@)", hoge));
  }
  
  ```
@@ -101,7 +101,7 @@
  // NAKWrap で囲うと C の関数でも使用できる
  void doHomuHomu(id homuhomu) {
  
-    NAKWrap(NAKAssert(homuhomu != nil, @"ほむほむは nil 以外"));
+    NAKWrap(NAKAssertTrue(homuhomu != nil, @"ほむほむは nil 以外"));
 
  }
  
@@ -171,7 +171,7 @@
 #ifdef DEBUG
 
 #define NAKAssertKindOfClass(obj, clazz, fmt, ...) \
-    NAKAssert([obj isKindOfClass:[clazz class]], (fmt), ##__VA_ARGS__)
+    NAKAssertTrue([obj isKindOfClass:[clazz class]], (fmt), ##__VA_ARGS__)
 
 #else
 
@@ -197,7 +197,7 @@
 #ifdef DEBUG
 
 #define NAKAssertMemberOfClass(obj, clazz, fmt, ...) \
-    NAKAssert([obj isMemberOfClass:[clazz class]], (fmt), ##__VA_ARGS__)
+    NAKAssertTrue([obj isMemberOfClass:[clazz class]], (fmt), ##__VA_ARGS__)
 
 #else
 
@@ -272,7 +272,7 @@
 #define NAKAssertArrayType(array, clazz, fmt, ...) \
     do { \
         for (id element in (array)) { \
-            NAKAssert([element isKindOfClass:[clazz class]], (fmt), ##__VA_ARGS__); \
+            NAKAssertTrue([element isKindOfClass:[clazz class]], (fmt), ##__VA_ARGS__); \
         } \
     } while (0)
 
@@ -296,11 +296,11 @@
 #ifdef DEBUG
 
 #define NAKAssertMainThread(fmt, ...) \
-    NAKAssert([NSThread isMainThread], (fmt), ##__VA_ARGS__)
+    NAKAssertTrue([NSThread isMainThread], (fmt), ##__VA_ARGS__)
 
 #else
 
-#define NAKAssertMainThread
+#define NAKAssertMainThread(...)
 
 #endif
 
@@ -320,11 +320,11 @@
 #ifdef DEBUG
 
 #define NAKAssertDispatchQueue(queue, fmt, ...) \
-    NAKAssert(_NAK_dispatch_get_current_queue() == (queue), (fmt), #__VA_ARGS__)
+    NAKAssertTrue(_NAK_dispatch_get_current_queue() == (queue), (fmt), ##__VA_ARGS__)
 
 #else
 
-#define NAKAssertDispatchQueue
+#define NAKAssertDispatchQueue(...)
 
 #endif
 

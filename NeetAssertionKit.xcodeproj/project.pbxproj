@@ -15,6 +15,7 @@
 		42997CD318571A3E008D9F65 /* NAKAssertions.h in Headers */ = {isa = PBXBuildFile; fileRef = 42997CD118571A3E008D9F65 /* NAKAssertions.h */; };
 		42997CD418571A3E008D9F65 /* NAKAssertions.m in Sources */ = {isa = PBXBuildFile; fileRef = 42997CD218571A3E008D9F65 /* NAKAssertions.m */; };
 		42997CDA18574F88008D9F65 /* NAKAssertTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 42997CD918574F88008D9F65 /* NAKAssertTest.m */; };
+		42997CE11857FD79008D9F65 /* TestObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 42997CE01857FD79008D9F65 /* TestObjects.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,8 @@
 		42997CD218571A3E008D9F65 /* NAKAssertions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAKAssertions.m; sourceTree = "<group>"; };
 		42997CD918574F88008D9F65 /* NAKAssertTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NAKAssertTest.m; sourceTree = "<group>"; };
 		42997CDB18575032008D9F65 /* NeetAssertionKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NeetAssertionKit.h; sourceTree = "<group>"; };
+		42997CDF1857FD79008D9F65 /* TestObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestObjects.h; sourceTree = "<group>"; };
+		42997CE01857FD79008D9F65 /* TestObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestObjects.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +131,8 @@
 			isa = PBXGroup;
 			children = (
 				42997CD918574F88008D9F65 /* NAKAssertTest.m */,
+				42997CDF1857FD79008D9F65 /* TestObjects.h */,
+				42997CE01857FD79008D9F65 /* TestObjects.m */,
 				42997CC218571866008D9F65 /* Supporting Files */,
 			);
 			path = NeetAssertionKitTests;
@@ -198,7 +203,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = neethouse.org;
+				ORGANIZATIONNAME = "covelline, LLC.";
 				TargetAttributes = {
 					42997CB918571866008D9F65 = {
 						TestTargetID = 42997CA618571866008D9F65;
@@ -248,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42997CDA18574F88008D9F65 /* NAKAssertTest.m in Sources */,
+				42997CE11857FD79008D9F65 /* TestObjects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +354,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NeetAssertionKit/NeetAssertionKit-Prefix.pch";
+				MACH_O_TYPE = staticlib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -359,6 +366,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NeetAssertionKit/NeetAssertionKit-Prefix.pch";
+				MACH_O_TYPE = staticlib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
