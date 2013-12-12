@@ -31,13 +31,22 @@
  ```objc
  
  // 条件式が false の時にエラーを出す.
- - (void)doHogeHoge:(id)homuhomu {
-    NAKAssertTrue(homuhomu != nil, @"homuhomu must not nil (%@)", hoge);
+ - (void)getObjectAtIndex:(NSUInteger)index inArray:(NSArray *)array {
+ 
+    // index が NSNotFound の時エラー
+    NSAssertTrue(index != NSNotFound, @"index は NSNotFound 以外 (index=%u)", index);
+ 
+    ...
  }
  
  // C の関数内で使う時は NAKWrap で囲む.
- void doHogeHoge(id homuhomu) {
-    NAKWrap(NAKAssertTrue(homuhomu != nil, @"homuhomu must not nil (%@)", hoge));
+ // 他のマクロを使う場合も同様に NAKWrap で囲む.
+ id getObjectInArray(NSUInteger index, NSArray *array) {
+ 
+    // index が NSNotFound の時エラー
+    NSAssertTrue(index != NSNotFound, @"index は NSNotFound 以外 (index=%u)", index);
+ 
+    ...
  }
  
  ```
@@ -69,8 +78,15 @@
 
  ```objc
  
- NAKFail(@"Force fail.");
-
+ switch (type) {
+    case ValidType:
+        ...
+        break;
+ 
+    default:
+        NAKFail(@"ここを通るのはおかしい！");
+ }
+ 
  ```
   
  @param fmt NSString. エラー発生時に表示するメッセージ.
@@ -99,10 +115,11 @@
  ```objc
  
  // NAKWrap で囲うと C の関数でも使用できる
- void doHomuHomu(id homuhomu) {
+ void setHomuhomu(NSString *homuhomu) {
  
-    NAKWrap(NAKAssertTrue(homuhomu != nil, @"ほむほむは nil 以外"));
+    NAKWrap(NAKAssertTrue(0 < homuhomu.length, @"ほむほむは空じゃだめ");
 
+    ...
  }
  
  ```
@@ -128,6 +145,18 @@
  expression が nil でないことを表明する.
  
  リリースビルドでは取り除かれ, 指定した式も実行されない.
+ 
+ ```objc
+ 
+ - (void)setHomuhomu:(NSString *)homuhomu {
+ 
+    // homuhomu が nil の時エラー
+    NAKAssertNotNil(homuhomu, @"ほむほむは nil 以外");
+ 
+    ...
+ }
+ 
+ ```
  
  @param expression nil でないことを表明する式.
  
@@ -155,10 +184,10 @@
  
  ```objc
  
- // obj が NSArray か, そのサブクラスのインスタンスであることを表明
  id obj = ...;
  
- NAKAssertKindOfClass(obj, NSArray, @"obj must be NSArray");
+ // obj が NSArray か, そのサブクラスのインスタンスであることを表明
+ NAKAssertKindOfClass(obj, NSArray, @"obj は NSArray かサブクラス");
  
  ```
  
@@ -187,6 +216,22 @@
  サブクラスのインスタンスであってもエラーになる.
  
  リリースビルドでは取り除かれる.
+ 
+ ```objc
+ 
+ NSOperation *ope = ...;
+ 
+ // ope が NSOperation 以外の時エラー (サブクラスでもエラー)
+ NAKAssertMemberOfClass(ope, NSOperation, @"ope は NSOperation そのもの (サブクラスもだめ)");
+ 
+ ```
+ 
+ ```objc
+ NSOperation *ope = [NSBlockOperation blockOperationWithBlock:^{ ... }];
+ 
+ // NSOperation のサブクラスだからエラーが起きる
+ NAKAssertMemberOfClass(ope, NSOperation, @"ope は NSOperation そのもの (サブクラスもだめ)");
+ ```
   
  @param obj アサーションの対象オブジェクト.
  
@@ -217,12 +262,16 @@
  
  ```objc
  
- // obj が NSArray か, そのサブクラスでない時はエラー
- // nil の場合はエラーにならない
- id obj = ...;
-
- NSArray *array = NAKAssertCast(obj, NSArray);
-   
+ - (void)receivedNotify:(NSNotification *)note {
+ 
+    // note.userInfo[@"stringValueKey"] が NSString (またはそのサブクラス) でない時エラー
+    // NSString　または nil の場合は string に代入される.
+    NSString *string = NAKAssertCast(note.userInfo[@"stringValueKey"], NSString);
+ 
+    ...
+ }
+ ```
+ 
  @param expression キャストする式.
 
  @param clazz 期待するクラスの名前.
@@ -251,11 +300,13 @@
  
  ```objc
  
- // array の各要素はすべて NSString
- NSArray *array = ...;
+ - (void)setStringArray:(NSArray *)array {
+ 
+    // array に NSString (またはそのサブクラス) 以外のオブジェクトが入っているとエラー
+    NAKAssertArrayType(array, NSString, @"文字列の配列を指定する");
 
- NAKAssertArrayType(array, NSString, @"array of NSString");
-
+    ...
+ }
  ```
  
  @param array NSArray. アサーション対象の配列.
@@ -289,6 +340,18 @@
  
  リリースビルドでは取り除かれる.
  
+ ```objc
+ 
+ - (void)beginHomuhomuAnimation {
+ 
+    // メインスレッド以外から呼ばれるとエラー
+    NAKAssertMainThread(@"UI をいじるのでメインスレッドから呼ぶこと！");
+ 
+    ...
+ }
+ 
+ ```
+ 
  @param fmt NSString. エラー発生時に表示するメッセージ.
     NSLog などと同じ形式でフォーマットを指定でき, この後の引数で埋め込む変数を指定する.
  
@@ -310,6 +373,20 @@
  実行されているディスパッチキューが指定したキューであることを表明する.
  
  リリースビルドでは取り除かれる.
+ 
+ ```objc
+ 
+ dispatch_queue_t _queue;
+ 
+ - (void)nonThreadSafeMethod {
+ 
+    // 現在のキューが _queue 以外だとエラー
+    NAKAssertDispatchQueue(_queue, @"変なキューで実行されてる！");
+ 
+    ...
+ }
+ 
+ ```
  
  @param queue dispatch_queue_t. 期待するディスパッチキューオブジェクト.
  
