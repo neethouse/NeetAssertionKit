@@ -29,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		425D66FB1858564000815D32 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		425D66FC1858564700815D32 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		42997CA718571866008D9F65 /* NeetAssertionKit.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = NeetAssertionKit.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		42997CAA18571866008D9F65 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		42997CAD18571866008D9F65 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -76,6 +78,8 @@
 				42997CC118571866008D9F65 /* NeetAssertionKitTests */,
 				42997CA918571866008D9F65 /* Frameworks */,
 				42997CA818571866008D9F65 /* Products */,
+				425D66FC1858564700815D32 /* README.md */,
+				425D66FB1858564000815D32 /* LICENSE */,
 			);
 			sourceTree = "<group>";
 		};
