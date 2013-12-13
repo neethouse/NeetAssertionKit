@@ -3,6 +3,28 @@ NeetAssertionKit
 
 ニートのための Objective-C 用アサーションマクロ集.
 
+## How To Install
+
+You can use CocoaPods.
+
+Add NeetHouse Specs repository.
+
+```sh
+# Run on the your shell
+pod repo add neethouse https://github.com/neethouse/Specs
+```
+
+Append in the your Podfile.
+
+```
+pod 'NeetAssertionKit'
+```
+
+And install.
+
+```sh
+pod install
+```
 
 ## Assertion Macros
 
@@ -52,7 +74,7 @@ switch (type) {
        NAKFail(@"ここを通るのはおかしい！");
 }
 ```
-  
+
 
 ### NAKWrap(expression)
 
@@ -72,7 +94,7 @@ void setHomuhomu(NSString *homuhomu) {
    ...
 }
 ```
- 
+
 
 
 ### NAKAssertNotNil(expression, fmt, ...)
@@ -109,13 +131,13 @@ NAKAssertKindOfClass(obj, NSArray, @"obj は NSArray かサブクラス");
 
 
 ### NAKAssertMemberOfClass(obj, clazz, fmt, ...)
- 
+
 オブジェクトが指定したクラスのインスタンスであることを表明する.
 
 サブクラスのインスタンスであってもエラーになる.
 
 リリースビルドでは取り除かれる.
- 
+
 ```objc
 
 NSOperation *ope = ...;
@@ -131,9 +153,9 @@ NSOperation *ope = [NSBlockOperation blockOperationWithBlock:^{ ... }];
 NAKAssertMemberOfClass(ope, NSOperation, @"ope は NSOperation そのもの (サブクラスもだめ)");
 ```
 
-  
+
 ### NAKAssertCast(expression, clazz)
- 
+
 expression の結果を clazz にキャストした値を取得する.
 
 expression が nil 以外で, clazz のサブクラスでない場合, エラーが発生する.
@@ -155,7 +177,7 @@ expression が nil の場合はエラーにならない.
 
 
 ### NAKAssertArrayType(array, clazz, fmt, ...)
- 
+
 NSArray 内のすべての要素が指定したクラスのサブクラスのインスタンスであることを表明する.
 
 リリースビルドでは取り除かれる.
@@ -173,7 +195,7 @@ NSArray 内のすべての要素が指定したクラスのサブクラスのイ
 
 
 ### NAKAssertMainThread(fmt, ...)
- 
+
 実行されているスレッドがメインスレッドであることを表明する.
 
 リリースビルドでは取り除かれる.
@@ -191,7 +213,7 @@ NSArray 内のすべての要素が指定したクラスのサブクラスのイ
 
 
 ### NAKAssertDispatchQueue(queue, fmt, ...)
- 
+
 実行されているディスパッチキューが指定したキューであることを表明する.
 
 リリースビルドでは取り除かれる.
@@ -208,3 +230,4 @@ dispatch_queue_t _queue;
    ...
 }
 ```
+
