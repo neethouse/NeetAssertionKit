@@ -161,7 +161,7 @@ expression の結果を clazz にキャストした値を取得する.
 expression が nil 以外で, clazz のサブクラスでない場合, エラーが発生する.
 expression が nil の場合はエラーにならない.
 
-リリースビルドでは expression の結果をそのまま返す.
+リリースビルドでは expression の結果を単純にキャストして返す.
 
 ```objc
 
