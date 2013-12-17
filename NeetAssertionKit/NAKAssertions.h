@@ -258,7 +258,7 @@
  expression が nil 以外で, clazz のサブクラスでない場合, エラーが発生する.
  expression が nil の場合はエラーにならない.
  
- リリースビルドでは expression の結果をそのまま返す.
+ リリースビルドでは expression の結果を単純にキャストして返す.
  
  ```objc
  
@@ -287,7 +287,7 @@
 
 #else
 
-#define NAKAssertCast(expression, ...) (expression)
+#define NAKAssertCast(expression, clazz) ((clazz *)(expression))
 
 #endif
 

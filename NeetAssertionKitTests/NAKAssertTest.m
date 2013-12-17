@@ -437,6 +437,14 @@ static void testWrapFailFunc() {
         XCTAssertEqual(homu, src, @"");
     }()), @"");
     
+    // ダウンキャストでも警告が出ない
+    // -Werror=incompatible-pointer-types フラグを指定してテスト
+    XCTAssertNoThrow((^{
+        NAKHomuHomu *src = [[NAKMegaHomu alloc] init];
+        NAKMegaHomu *homu = NAKAssertCast(src, NAKMegaHomu);
+        XCTAssertEqual(homu, src, @"");
+    }()), @"");
+    
 #endif
 }
 
