@@ -3,6 +3,8 @@ NeetAssertionKit
 
 ニートのための Objective-C 用アサーションマクロ集.
 
+[![Build Status](https://travis-ci.org/neethouse/NeetAssertionKit.svg)](https://travis-ci.org/neethouse/NeetAssertionKit)
+
 ## How To Install
 
 You can use CocoaPods.
