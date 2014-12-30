@@ -69,6 +69,29 @@
 #endif
 
 
+/**
+
+ 条件式が false であることを表明する.
+
+ リリースビルドでは取り除かれ, 指定した条件式も実行されない.
+
+ @param condition アサーション対象の条件式.
+ この式の結果が false でない場合, アサーションエラーが発生する.
+
+ @param fmt NSString. エラー発生時に表示するメッセージ.
+ NSLog などと同じ形式でフォーマットを指定でき, この後の引数で埋め込む変数を指定する.
+
+ */
+#ifdef DEBUG
+
+#define NAKAssertFalse(condition, fmt, ...) NSAssert((condition == NO), (fmt), ##__VA_ARGS__)
+
+#else
+
+#define NAKAssertFalse(condition, fmt, ...)
+
+#endif
+
 
 /**
  

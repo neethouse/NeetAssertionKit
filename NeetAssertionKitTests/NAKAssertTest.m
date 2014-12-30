@@ -78,6 +78,50 @@
 #endif
 }
 
+/**
+ 
+ NAKAssertFalse
+
+ */
+- (void)testAssertFalse {
+
+#ifdef DEBUG
+
+    /******************** デバッグビルド ********************/
+
+    // エラー起きない
+    XCTAssertNoThrow((^{
+        NAKAssertFalse(NO, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // エラー
+    XCTAssertThrows((^{
+        NAKAssertFalse(YES, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"str:ほむほむ, i:501");
+
+#else
+
+    /******************** リリースビルド ********************/
+
+    // エラー起きない
+    XCTAssertNoThrow((^{
+        NAKAssertFalse(NO, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // true でもエラー起きない
+    XCTAssertNoThrow((^{
+        NAKAssertFalse(YES, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    { // 条件式は実行されない
+        BOOL no = NO;
+        NAKAssertFalse((no = YES), @"");
+        XCTAssertFalse(no, @"条件式は実行されない");
+    }
+    
+#endif
+}
+
 
 /**
  
