@@ -58,6 +58,11 @@ id getObjectInArray(NSUInteger index, NSArray *array) {
 }
 ```
 
+### NAKAssertFalse(condition, fmt, ...)
+
+条件式が false であることを表明する.
+
+リリースビルドでは取り除かれ, 指定した条件式も実行されない.
 
 ### NAKFail(fmt, ...)
 
@@ -116,6 +121,11 @@ expression が nil でないことを表明する.
 }
 ```
 
+### NAKAssertNil(expression, fmt, ...)
+
+expression が nil であることを表明する.
+
+リリースビルドでは取り除かれ, 指定した式も実行されない.
 
 ### NAKAssertKindOfClass(obj, clazz, fmt, ...)
 
