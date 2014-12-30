@@ -7,16 +7,7 @@ NeetAssertionKit
 
 ## How To Install
 
-You can use CocoaPods.
-
-Add NeetHouse Specs repository.
-
-```sh
-# Run on the your shell
-pod repo add neethouse https://github.com/neethouse/Specs
-```
-
-Append in the your Podfile.
+You can use CocoaPods. Append in the your Podfile.
 
 ```
 pod 'NeetAssertionKit'
