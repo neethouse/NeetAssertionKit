@@ -13,24 +13,6 @@
 #import "TestObjects.h"
 
 
-/**
- 
- 例外が発生し, NSException.reason が期待した値かチェックする.
- 
- */
-#define NAKXCTAssertThrows(expression, expectedReason, fmt, ...) do { \
-        BOOL _nak_isThrew = NO; \
-        @try { \
-            expression; \
-        } @catch (NSException *exception) { \
-            _nak_isThrew = YES; \
-            XCTAssertEqualObjects(exception.reason, expectedReason, fmt, ##__VA_ARGS__); \
-        } @finally { \
-            XCTAssertTrue(_nak_isThrew, fmt, ##__VA_ARGS__); \
-        } \
-    } while (0)
-
-
 @interface NAKAssertTest : XCTestCase
 
 @end
@@ -69,10 +51,10 @@
     }()), @"");
     
     // エラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         NAKAssertTrue(NO, @"str:%@, i:%d", @"ほむほむ", 501);
-    }()), @"str:ほむほむ, i:501", @"");
-    
+    }()), @"str:ほむほむ, i:501");
+
 #else
     
     /******************** リリースビルド ********************/
@@ -96,6 +78,50 @@
 #endif
 }
 
+/**
+ 
+ NAKAssertFalse
+
+ */
+- (void)testAssertFalse {
+
+#ifdef DEBUG
+
+    /******************** デバッグビルド ********************/
+
+    // エラー起きない
+    XCTAssertNoThrow((^{
+        NAKAssertFalse(NO, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // エラー
+    XCTAssertThrows((^{
+        NAKAssertFalse(YES, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"str:ほむほむ, i:501");
+
+#else
+
+    /******************** リリースビルド ********************/
+
+    // エラー起きない
+    XCTAssertNoThrow((^{
+        NAKAssertFalse(NO, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // true でもエラー起きない
+    XCTAssertNoThrow((^{
+        NAKAssertFalse(YES, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    { // 条件式は実行されない
+        BOOL no = NO;
+        NAKAssertFalse((no = YES), @"");
+        XCTAssertFalse(no, @"条件式は実行されない");
+    }
+    
+#endif
+}
+
 
 /**
  
@@ -113,9 +139,9 @@
     /******************** デバッグビルド ********************/
 
     // 常にエラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         NAKFail(@"str:%@, i:%d", @"ほむほむ", 501);
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
     
 #else
     
@@ -146,9 +172,9 @@
     /******************** デバッグビルド ********************/
 
     // 常にエラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         testWrapFailFunc();
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
     
 #else
     
@@ -199,9 +225,9 @@ static void testWrapFailFunc() {
     }()), @"");
 
     // nil だとエラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         NAKAssertNotNil(nil, @"str:%@, i:%d", @"ほむほむ", 501);
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
 
 #else
     
@@ -221,6 +247,54 @@ static void testWrapFailFunc() {
     { // 条件式は実行されない
         id obj = nil;
         NAKAssertNotNil((obj = @"homu"), @"");
+        XCTAssertNil(obj, @"条件式は実行されない");
+    }
+    
+#endif
+}
+
+/**
+
+ NAKAssertNil
+
+ */
+- (void)testAssertNil {
+
+#ifdef DEBUG
+
+    /******************** デバッグビルド ********************/
+
+    // nil だとエラー起きない
+    XCTAssertNoThrow((^{
+
+        NAKAssertNil(nil, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // nil 以外だとエラー
+    XCTAssertThrows((^{
+        id obj = @"homu";
+        NAKAssertNil(obj, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"str:ほむほむ, i:501");
+    
+#else
+
+    /******************** リリースビルド ********************/
+
+    // nil だとエラー起きない
+    XCTAssertNoThrow((^{
+
+        NAKAssertNil(nil, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // nil 以外でもエラー起きない
+    XCTAssertNoThrow((^{
+        __unused id obj = @"homu";
+        NAKAssertNil(obj, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    { // 条件式は実行されない
+        id obj = nil;
+        NAKAssertNil((obj = @"homu"), @"");
         XCTAssertNil(obj, @"条件式は実行されない");
     }
     
@@ -256,10 +330,10 @@ static void testWrapFailFunc() {
     }()), @"");
 
     // その他のクラスのインスタンス: エラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         id obj = [NSString string];
         NAKAssertKindOfClass(obj, NAKHomuHomu, @"str:%@, i:%d", @"ほむほむ", 501);
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
     
 #else
     
@@ -317,16 +391,16 @@ static void testWrapFailFunc() {
     }()), @"");
     
     // 指定したクラスのサブクラスのインスタンス: エラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         id obj = [[NAKMegaHomu alloc] init];
         NAKAssertMemberOfClass(obj, NAKHomuHomu, @"str:%@, i:%d", @"ほむほむ", 501);
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
     
     // その他のクラスのインスタンス: エラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         id obj = [NSString string];
         NAKAssertMemberOfClass(obj, NAKHomuHomu, @"str:%@, i:%d", @"ほむほむ", 501);
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
     
 #else
 
@@ -476,7 +550,7 @@ static void testWrapFailFunc() {
     }()), @"");
     
     // その他のクラスのインスタンスが含まれる: エラー
-    NAKXCTAssertThrows((^{
+    XCTAssertThrows((^{
         NSArray *objects = @[ [[NAKHomuHomu alloc] init],
                               [[NAKMegaHomu alloc] init],
                               @"homu"
@@ -484,7 +558,7 @@ static void testWrapFailFunc() {
         
         NAKAssertArrayType(objects, NAKHomuHomu, @"str:%@, i:%d", @"ほむほむ", 501);
         
-    }()), @"str:ほむほむ, i:501", @"");
+    }()), @"str:ほむほむ, i:501");
 
 #else
     
@@ -549,9 +623,9 @@ static void testWrapFailFunc() {
         
         // sync だとメインスレッドで実行されちゃうので async して待機
         dispatch_async(queue, ^{
-            NAKXCTAssertThrows((^{
+            XCTAssertThrows((^{
                 NAKAssertMainThread(@"str:%@, i:%d", @"ほむほむ", 501);
-            }()), @"str:ほむほむ, i:501", @"");
+            }()), @"str:ほむほむ, i:501");
         });
         
         dispatch_sync(queue, ^{}); // 待機
@@ -624,9 +698,9 @@ static void testWrapFailFunc() {
         dispatch_queue_t expectedQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
         
         dispatch_async(queue, ^{
-            NAKXCTAssertThrows((^{
+            XCTAssertThrows((^{
                 NAKAssertDispatchQueue(expectedQueue, @"str:%@, i:%d", @"ほむほむ", 501);
-            }()), @"str:ほむほむ, i:501", @"");
+            }()), @"str:ほむほむ, i:501");
         });
         
         dispatch_sync(queue, ^{}); // 待機

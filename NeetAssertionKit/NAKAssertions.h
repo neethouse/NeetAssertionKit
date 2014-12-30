@@ -69,6 +69,29 @@
 #endif
 
 
+/**
+
+ 条件式が false であることを表明する.
+
+ リリースビルドでは取り除かれ, 指定した条件式も実行されない.
+
+ @param condition アサーション対象の条件式.
+ この式の結果が false でない場合, アサーションエラーが発生する.
+
+ @param fmt NSString. エラー発生時に表示するメッセージ.
+ NSLog などと同じ形式でフォーマットを指定でき, この後の引数で埋め込む変数を指定する.
+
+ */
+#ifdef DEBUG
+
+#define NAKAssertFalse(condition, fmt, ...) NSAssert((condition == NO), (fmt), ##__VA_ARGS__)
+
+#else
+
+#define NAKAssertFalse(condition, fmt, ...)
+
+#endif
+
 
 /**
  
@@ -172,6 +195,41 @@
 #else
 
 #define NAKAssertNotNil(...)
+
+#endif
+
+/**
+
+ expression が nil であることを表明する.
+
+ リリースビルドでは取り除かれ, 指定した式も実行されない.
+
+ ```objc
+
+ - (void)setHomuhomu:(NSString *)homuhomu {
+
+    // homuhomu が nil以外の時エラー
+    NAKAssertNil(homuhomu, @"ほむほむは nil 以外");
+
+ ...
+ }
+
+ ```
+
+ @param expression nil であることを表明する式.
+
+ @param fmt NSString. エラー発生時に表示するメッセージ.
+ NSLog などと同じ形式でフォーマットを指定でき, この後の引数で埋め込む変数を指定する.
+
+ */
+#ifdef DEBUG
+
+#define NAKAssertNil(expression, fmt, ...) \
+    NAKAssertTrue((expression) == nil, (fmt), ##__VA_ARGS__)
+
+#else
+
+#define NAKAssertNil(...)
 
 #endif
 
