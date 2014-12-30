@@ -227,6 +227,54 @@ static void testWrapFailFunc() {
 #endif
 }
 
+/**
+
+ NAKAssertNil
+
+ */
+- (void)testAssertNil {
+
+#ifdef DEBUG
+
+    /******************** デバッグビルド ********************/
+
+    // nil だとエラー起きない
+    XCTAssertNoThrow((^{
+
+        NAKAssertNil(nil, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // nil 以外だとエラー
+    NAKXCTAssertThrows((^{
+        id obj = @"homu";
+        NAKAssertNil(obj, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"str:ほむほむ, i:501", @"");
+    
+#else
+
+    /******************** リリースビルド ********************/
+
+    // nil だとエラー起きない
+    XCTAssertNoThrow((^{
+
+        NAKAssertNil(nil, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    // nil 以外でもエラー起きない
+    XCTAssertNoThrow((^{
+        __unused id obj = @"homu";
+        NAKAssertNil(obj, @"str:%@, i:%d", @"ほむほむ", 501);
+    }()), @"");
+
+    { // 条件式は実行されない
+        id obj = nil;
+        NAKAssertNil((obj = @"homu"), @"");
+        XCTAssertNil(obj, @"条件式は実行されない");
+    }
+    
+#endif
+}
+
 
 /**
  
